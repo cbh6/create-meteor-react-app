@@ -1,0 +1,58 @@
+{
+  "env": {
+    "node": true,
+    "jest": true,
+    "browser": true,
+    "es6": true,
+    "meteor": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "prettier",
+    "plugin:meteor/recommended",
+    "@meteorjs/eslint-config-meteor"
+  ],
+  "parserOptions": {
+    "allowImportExportEverywhere": true
+  },
+  "plugins": ["meteor", "prettier"],
+  "settings": {
+    "import/resolver": "meteor"
+  },
+  "rules": {
+    "prettier/prettier": ["error"],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/forbid-prop-types": ["off", { "forbid": [] }],
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        "components": ["Link"],
+        "specialLink": ["hrefLeft", "hrefRight", "to"],
+        "aspects": ["noHref", "invalidHref", "preferButton"]
+      }
+    ],
+    "no-console": "warn",
+    "no-underscore-dangle": "off",
+    "no-unused-expressions": [
+      1,
+      { "allowTernary": true, "allowShortCircuit": true }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": ["off", "never"],
+    "linebreak-style": 0,
+    "class-methods-use-this": [0],
+    "valid-jsdoc": "warn",
+    "func-names": ["warn", "as-needed"],
+    "no-nested-ternary": "off",
+    "no-param-reassign": ["error", { "props": false }]
+  },
+  "globals": {
+    "SSR": true,
+    "Roles": true,
+    "moment": true,
+    "Bert": true,
+    "Counter": true
+  }
+}

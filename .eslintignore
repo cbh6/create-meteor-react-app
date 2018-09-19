@@ -1,0 +1,5 @@
+.deployment/
+.meteor/
+node_modules/
+public/
+coverage/
