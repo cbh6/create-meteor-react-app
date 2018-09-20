@@ -1,43 +1,60 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
 
 class Header extends Component {
+  state = { activeItem: '' };
+
   onLogout = (e) => {
     e.preventDefault();
     Meteor.logout(() => {
       const { history } = this.props;
       history.push('/login');
+      this.setState({ activeItem: 'login' });
     });
   };
 
-  onLogin = () => {
+  handleItemClick = (e, { name }) => {
     const { history } = this.props;
-    history.push('/login');
-  };
-
-  navigateToHome = () => {
-    const { history } = this.props;
-    history.push('/');
+    history.push(`/${name}`);
+    this.setState({ activeItem: name });
   };
 
   render() {
     const { user } = this.props;
+    const { activeItem } = this.state;
 
     return (
       <Menu className="main-nav">
         <Menu.Item header>Meteor APP</Menu.Item>
-        <Menu.Item name="Home" onClick={this.navigateToHome} />
         {Meteor.userId() ? (
-          <Menu.Menu position="right">
-            <Menu.Item name="logout" onClick={this.onLogout} />
-            <Menu.Item>{user && user.emails ? user.emails[0].address : null}</Menu.Item>
-          </Menu.Menu>
+          <Fragment>
+            <Menu.Item name="home" active={activeItem === 'home'} onClick={this.handleItemClick} />
+            {/* Logged user menu */}
+            <Menu.Menu position="right">
+              <Menu.Item name="logout" onClick={this.onLogout} />
+              <Menu.Item>{user && user.emails ? user.emails[0].address : null}</Menu.Item>
+            </Menu.Menu>
+          </Fragment>
         ) : (
+          // Not logged user menu
           <Menu.Menu position="right">
-            <Menu.Item name="login" as={Link} to="/login" onClick={this.onLogin} />
+            <Menu.Item
+              name="register"
+              active={activeItem === 'register'}
+              as={Link}
+              to="/register"
+              onClick={this.handleItemClick}
+            />
+            <Menu.Item
+              name="login"
+              active={activeItem === 'login'}
+              as={Link}
+              to="/login"
+              onClick={this.handleItemClick}
+            />
           </Menu.Menu>
         )}
       </Menu>
