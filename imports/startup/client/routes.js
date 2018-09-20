@@ -1,11 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import createHistory from 'history/createBrowserHistory';
-import { Route, Router, Switch } from 'react-router-dom';
-import { Header } from 'semantic-ui-react';
+import {
+  Route, Router, Switch, Redirect,
+} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 import MainLayout from '../../ui/layouts/MainLayout';
+import HomePage from '../../ui/pages/HomePage';
+import LoginPage from '../../ui/pages/LoginPage';
 
 const history = createHistory();
 
@@ -16,11 +19,12 @@ const routes = (
         <Route
           exact
           path="/"
-          render={() => (
-            <Header as="h1" textAlign="center">
-              Meteor Base App Project
-            </Header>
-          )}
+          render={() => (Meteor.userId() ? <HomePage /> : <Redirect to="/login" />)}
+        />
+        <Route
+          exact
+          path="/login"
+          render={() => (Meteor.userId() ? <Redirect to="/" /> : <LoginPage />)}
         />
       </Switch>
     </MainLayout>
