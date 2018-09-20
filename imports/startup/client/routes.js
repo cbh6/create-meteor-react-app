@@ -9,6 +9,8 @@ import 'semantic-ui-css/semantic.min.css';
 import MainLayout from '../../ui/layouts/MainLayout';
 import HomePage from '../../ui/pages/HomePage';
 import LoginPage from '../../ui/pages/LoginPage';
+import RegisterPage from '../../ui/pages/RegisterPage';
+import ForgotPasswordPage from '../../ui/pages/ForgotPasswordPage';
 
 const history = createHistory();
 
@@ -19,12 +21,27 @@ const routes = (
         <Route
           exact
           path="/"
+          render={() => (Meteor.userId() ? <Redirect to="/home" /> : <Redirect to="/login" />)}
+        />
+        <Route
+          exact
+          path="/home"
           render={() => (Meteor.userId() ? <HomePage /> : <Redirect to="/login" />)}
         />
         <Route
           exact
           path="/login"
           render={() => (Meteor.userId() ? <Redirect to="/" /> : <LoginPage />)}
+        />
+        <Route
+          exact
+          path="/register"
+          render={() => (Meteor.userId() ? <Redirect to="/" /> : <RegisterPage />)}
+        />
+        <Route
+          exact
+          path="/forgot-password"
+          render={() => (Meteor.userId() ? <Redirect to="/" /> : <ForgotPasswordPage />)}
         />
       </Switch>
     </MainLayout>

@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
   Button, Form, Message, Header, Grid, Segment,
 } from 'semantic-ui-react';
+import { Accounts } from 'meteor/accounts-base';
 
-class LoginPage extends Component {
+class RegisterPage extends Component {
   state = { email: '', password: '', error: '' };
+
+  handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = () => {
     const { email, password } = this.state;
     const { history } = this.props;
-    Meteor.loginWithPassword(email, password, (err) => {
+    Accounts.createUser({ email, password }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
         return;
       }
-      Bert.alert('Logged in', 'success', 'growl-top-right');
+      Bert.alert('Account created. Logged in', 'success', 'growl-top-right');
       history.push('/');
     });
   };
-
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   render() {
     const { error } = this.state;
@@ -29,7 +30,7 @@ class LoginPage extends Component {
       <Grid centered columns={1}>
         <Grid.Column className="centered-form">
           <Header textAlign="center" as="h3">
-            Please Sign in
+            Please Sign up
           </Header>
           <Segment>
             <Message hidden={!error} color="red">
@@ -55,28 +56,18 @@ class LoginPage extends Component {
                 placeholder="Password"
               />
               <Button fluid color="blue" onClick={this.handleSubmit} type="submit">
-                Sign in
+                Sign up
               </Button>
             </Form>
           </Segment>
-          <p className="login-subtitle">
-            Not a member?
-            {' '}
-            <Link to="/register">Sign up here</Link>
-          </p>
-          <p className="login-subtitle">
-            Forgot password?
-            {' '}
-            <Link to="/forgot-password">Click here</Link>
-          </p>
         </Grid.Column>
       </Grid>
     );
   }
 }
 
-LoginPage.propTypes = {
+RegisterPage.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-export default withRouter(LoginPage);
+export default withRouter(RegisterPage);
