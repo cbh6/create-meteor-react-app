@@ -7,7 +7,9 @@ import Footer from './Footer';
 const MainLayout = ({ children }) => (
   <Fragment>
     <Header />
-    <Segment basic>{children}</Segment>
+    <Segment basic className="site-content">
+      {children}
+    </Segment>
     <Footer />
   </Fragment>
 );
