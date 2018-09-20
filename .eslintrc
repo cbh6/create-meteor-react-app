@@ -9,19 +9,17 @@
   "parser": "babel-eslint",
   "extends": [
     "airbnb",
-    "prettier",
     "plugin:meteor/recommended",
-    "@meteorjs/eslint-config-meteor"
+    "plugin:react/recommended"
   ],
   "parserOptions": {
     "allowImportExportEverywhere": true
   },
-  "plugins": ["meteor", "prettier"],
+  "plugins": ["meteor"],
   "settings": {
     "import/resolver": "meteor"
   },
   "rules": {
-    "prettier/prettier": ["error"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/forbid-prop-types": ["off", { "forbid": [] }],
     "jsx-a11y/label-has-for": "off",
