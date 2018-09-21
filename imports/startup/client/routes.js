@@ -11,6 +11,7 @@ import HomePage from '../../ui/pages/HomePage';
 import LoginPage from '../../ui/pages/LoginPage';
 import RegisterPage from '../../ui/pages/RegisterPage';
 import ForgotPasswordPage from '../../ui/pages/ForgotPasswordPage';
+import MyAccountPage from '../../ui/pages/MyAccountPage';
 
 const history = createHistory();
 
@@ -42,6 +43,11 @@ const routes = (
           exact
           path="/forgot-password"
           render={() => (Meteor.userId() ? <Redirect to="/" /> : <ForgotPasswordPage />)}
+        />
+        <Route
+          exact
+          path="/my-account"
+          render={() => (Meteor.userId() ? <MyAccountPage /> : <Redirect to="/login" />)}
         />
       </Switch>
     </MainLayout>

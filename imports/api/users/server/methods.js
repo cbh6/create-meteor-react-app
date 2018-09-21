@@ -1,3 +1,6 @@
+import Security from '../../security';
+import RepoUsers from '../../../db/users/repository';
+
 Meteor.methods({
   getEmailFromToken(token) {
     /* Get user email */
@@ -19,5 +22,9 @@ Meteor.methods({
 
     Roles.addUsersToRoles(id, 'user', 'default-group');
     return true;
+  },
+  getUserData() {
+    Security.checkLoggedIn();
+    return RepoUsers.findOne(Meteor.userId());
   },
 });

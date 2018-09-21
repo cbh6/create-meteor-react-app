@@ -2,4 +2,10 @@ export default class Security {
   static isAdmin() {
     return Roles.userIsInRole(Meteor.userId(), ['admin'], 'default-group');
   }
+
+  static checkLoggedIn() {
+    if (!Meteor.userId()) {
+      throw new Meteor.Error('not-authorized', 'You are not logged in');
+    }
+  }
 }
