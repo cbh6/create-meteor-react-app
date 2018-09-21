@@ -28,7 +28,7 @@ class ForgotPasswordPage extends Component {
     //   }
     //   Bert.alert(`Request sent to ${email}.`, 'success', 'growl-top-right');
     // });
-    this.formRef.reset();
+    this.setState({ email: '' });
   };
 
   render() {
