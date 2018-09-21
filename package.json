@@ -3,7 +3,8 @@
   "author": "Cristian Botella",
   "private": true,
   "scripts": {
-    "start": "meteor run",
+    "start": "./run.sh",
+    "dev": "METEORLOCAL=1 ./run.sh",
     "test": "meteor test --once --driver-package meteortesting:mocha"
   },
   "dependencies": {

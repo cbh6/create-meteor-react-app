@@ -32,7 +32,7 @@ class ForgotPasswordPage extends Component {
   };
 
   render() {
-    const { error } = this.state;
+    const { error, email } = this.state;
     return (
       <Grid centered columns={1}>
         <Grid.Column className="centered-form">
@@ -46,6 +46,7 @@ class ForgotPasswordPage extends Component {
             <Form>
               <Form.Input
                 onChange={this.handleChange}
+                value={email}
                 name="email"
                 fluid
                 required

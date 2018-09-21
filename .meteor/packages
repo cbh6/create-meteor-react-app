@@ -26,3 +26,6 @@ themeteorchef:bert
 accounts-base
 fourseven:scss
 seba:minifiers-autoprefixer
+alanning:roles
+check
+meteorhacks:ssr

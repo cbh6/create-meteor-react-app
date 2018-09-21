@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Button, Form, Message, Header, Grid, Segment,
 } from 'semantic-ui-react';
+import Validators from '../../api/validators';
 
 class LoginPage extends Component {
   state = { email: '', password: '', error: '' };
@@ -11,6 +12,12 @@ class LoginPage extends Component {
   handleSubmit = () => {
     const { email, password } = this.state;
     const { history } = this.props;
+
+    if (!Validators.validMailString(email)) {
+      this.setState({ error: 'Invalid email format' });
+      return;
+    }
+
     Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
         this.setState({ error: err.reason });
@@ -24,7 +31,7 @@ class LoginPage extends Component {
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   render() {
-    const { error } = this.state;
+    const { error, email, password } = this.state;
     return (
       <Grid centered columns={1}>
         <Grid.Column className="centered-form">
@@ -38,6 +45,7 @@ class LoginPage extends Component {
             <Form>
               <Form.Input
                 onChange={this.handleChange}
+                value={email}
                 name="email"
                 fluid
                 required
@@ -47,6 +55,7 @@ class LoginPage extends Component {
               />
               <Form.Input
                 onChange={this.handleChange}
+                value={password}
                 name="password"
                 fluid
                 required
