@@ -9,26 +9,38 @@ import Validators from '../../api/validators';
 class LoginPage extends Component {
   state = { email: '', password: '', error: '' };
 
+  handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
   handleSubmit = () => {
     const { email, password } = this.state;
     const { history } = this.props;
 
-    if (!Validators.validMailString(email)) {
-      this.setState({ error: 'Invalid email format' });
-      return;
-    }
-
+    if (!this.validForm()) return false;
     Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
         this.setState({ error: err.reason });
-        return;
+        return false;
       }
-      Bert.alert('Logged in', 'success', 'growl-top-right');
+      Bert.alert('Logged in', 'success');
       history.push('/');
     });
   };
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
+  validForm = () => {
+    const { email } = this.state;
+
+    if (!email) {
+      this.setState({ error: 'There are empty required fields' });
+      return false;
+    }
+
+    if (!Validators.validMailString(email)) {
+      this.setState({ error: 'Invalid email address' });
+      return false;
+    }
+
+    return true;
+  };
 
   render() {
     const { error, email, password } = this.state;
@@ -63,7 +75,7 @@ class LoginPage extends Component {
                 type="Password"
                 placeholder="Password"
               />
-              <Button fluid color="blue" onClick={this.handleSubmit} type="submit">
+              <Button fluid color="black" onClick={this.handleSubmit} type="submit">
                 Sign in
               </Button>
             </Form>
@@ -71,7 +83,9 @@ class LoginPage extends Component {
           <p className="login-subtitle">
             Not a member?
             {' '}
-            <Link to="/register">Sign up here</Link>
+            <Link color="black" to="/register">
+              Sign up here
+            </Link>
           </p>
           <p className="login-subtitle">
             Forgot password?

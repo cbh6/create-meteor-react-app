@@ -27,7 +27,7 @@ class Header extends Component {
     const { activeItem } = this.state;
 
     return (
-      <Menu className="main-nav">
+      <Menu inverted>
         <Menu.Item header>Meteor APP</Menu.Item>
         {Meteor.userId() ? (
           <Fragment>
@@ -35,7 +35,7 @@ class Header extends Component {
             {/* Logged user menu */}
             <Menu.Menu position="right">
               <Menu.Item name="logout" onClick={this.onLogout} />
-              <Menu.Item>{user && user.emails ? user.emails[0].address : null}</Menu.Item>
+              <Menu.Item>{user && user.username}</Menu.Item>
             </Menu.Menu>
           </Fragment>
         ) : (

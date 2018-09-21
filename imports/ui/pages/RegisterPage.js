@@ -4,40 +4,58 @@ import PropTypes from 'prop-types';
 import {
   Button, Form, Message, Header, Grid, Segment,
 } from 'semantic-ui-react';
-import { Accounts } from 'meteor/accounts-base';
 import Validators from '../../api/validators';
 
 class RegisterPage extends Component {
-  state = { email: '', password: '', error: '' };
+  state = {
+    email: '',
+    password: '',
+    username: '',
+    error: '',
+  };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = () => {
-    const { email, password } = this.state;
+    const { email, password, username } = this.state;
     const { history } = this.props;
 
-    if (!Validators.validMailString(email)) {
-      this.setState({ error: 'Invalid email' });
-      return;
-    }
-
-    if (!Validators.validPassword(password, 6)) {
-      this.setState({ error: 'Password must contain at least 6 characters' });
-      return;
-    }
-
-    Accounts.createUser({ email, password }, (err) => {
+    if (!this.validForm()) return false;
+    Meteor.call('createNewUser', { email, password, username }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
-        return;
+        return false;
       }
-      Bert.alert('Account created. Logged in', 'success', 'growl-top-right');
+      Bert.alert('Account created. Logged in', 'success');
       history.push('/');
     });
   };
 
+  validForm = () => {
+    const { email, password, username } = this.state;
+
+    if (!email || !password || !username) {
+      this.setState({ error: 'There are empty required fields' });
+      return false;
+    }
+
+    if (!Validators.validMailString(email)) {
+      this.setState({ error: 'Invalid email address' });
+      return false;
+    }
+
+    if (!Validators.validPassword(password, 6)) {
+      this.setState({ error: 'Password must contain at least 6 characters' });
+      return false;
+    }
+
+    return true;
+  };
+
   render() {
-    const { error, email, password } = this.state;
+    const {
+      error, username, email, password,
+    } = this.state;
     return (
       <Grid centered columns={1}>
         <Grid.Column className="centered-form">
@@ -49,6 +67,16 @@ class RegisterPage extends Component {
               {error}
             </Message>
             <Form>
+              <Form.Input
+                onChange={this.handleChange}
+                value={username}
+                name="username"
+                fluid
+                required
+                label="Username"
+                type="text"
+                placeholder="Username"
+              />
               <Form.Input
                 onChange={this.handleChange}
                 value={email}
@@ -69,7 +97,7 @@ class RegisterPage extends Component {
                 type="Password"
                 placeholder="Password"
               />
-              <Button fluid color="blue" onClick={this.handleSubmit} type="submit">
+              <Button fluid color="black" onClick={this.handleSubmit} type="submit">
                 Sign up
               </Button>
             </Form>

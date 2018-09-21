@@ -20,6 +20,7 @@
     "import/resolver": "meteor"
   },
   "rules": {
+    "consistent-return": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/forbid-prop-types": ["off", { "forbid": [] }],
     "jsx-a11y/label-has-for": "off",
