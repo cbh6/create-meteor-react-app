@@ -1,34 +1,24 @@
 // Fill the DB with example data on startup
 
-import { Meteor } from 'meteor/meteor';
-import { Links } from '../../api/links/links.js';
+/* The number of days from when a user logs in until their token expires and
+they are logged out. Defaults to 90. Set to null to disable login expiration. */
+Accounts.config({ loginExpirationInDays: null });
 
 Meteor.startup(() => {
-  // if the Links collection is empty
-  if (Links.find().count() === 0) {
-    const data = [
-      {
-        title: 'Do the Tutorial',
-        url: 'https://www.meteor.com/try',
-        createdAt: new Date(),
+  // If there are no users (first time running the app)
+  if (Meteor.users.find().count() === 0) {
+    const id = Accounts.createUser({
+      username: 'Administrator',
+      email: 'admin-email@yourapp.com',
+      password: 'admin',
+      profile: {
+        first_name: 'fname',
+        last_name: 'lname',
+        company: 'company',
       },
-      {
-        title: 'Follow the Guide',
-        url: 'http://guide.meteor.com',
-        createdAt: new Date(),
-      },
-      {
-        title: 'Read the Docs',
-        url: 'https://docs.meteor.com',
-        createdAt: new Date(),
-      },
-      {
-        title: 'Discussions',
-        url: 'https://forums.meteor.com',
-        createdAt: new Date(),
-      },
-    ];
+    });
 
-    data.forEach(link => Links.insert(link));
+    // Set admin role
+    Roles.addUsersToRoles(id, ['admin'], 'default-group');
   }
 });
