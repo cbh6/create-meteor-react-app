@@ -2,11 +2,11 @@
 #nvm use v8.4.0
 #meteor npm install
 
-SETTINGS_FILE="settings.json"
 
 # export CLUSTER_WORKERS_COUNT=auto
 if [ -z "$METEORLOCAL" ]
 then
+    SETTINGS_FILE="settings.json"
     # export MONGO_URL=SET_YOUR_PRODUCTION_MONGO_DATABASE
     # export MONGO_OPLOG_URL=SET_YOUR_PRODUCTION_MONGODB_OPLOG
 else
@@ -15,6 +15,7 @@ else
 fi
 
 # export MAIL_URL=...
+
 
 if [ -z "$METEOR_PORT" ]
 then

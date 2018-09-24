@@ -10,7 +10,8 @@ class MyAccountPage extends Component {
   state = {
     username: '',
     email: '',
-    newpassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
     error: '',
   };
 
@@ -55,20 +56,25 @@ class MyAccountPage extends Component {
   };
 
   changePassword = () => {
-    const { newpassword } = this.state;
+    const { newPassword, confirmNewPassword } = this.state;
 
-    if (!newpassword) {
+    if (!newPassword || !confirmNewPassword) {
       this.setState({ error: 'There are empty required fields' });
       return false;
     }
 
-    if (!Validators.validPassword(newpassword, 6)) {
+    if (newPassword !== confirmNewPassword) {
+      this.setState({ error: 'Passwords must match' });
+      return false;
+    }
+
+    if (!Validators.validPassword(newPassword, 6)) {
       this.setState({ error: 'Password must contain at least 6 characters' });
       return false;
     }
 
     this.setState({ error: '' });
-    Meteor.call('changeUserPassword', Meteor.userId(), newpassword, (err) => {
+    Meteor.call('changeUserPassword', Meteor.userId(), newPassword, (err) => {
       if (err) {
         Bert.alert(`There was an error trying to update your password ${err.message}`, 'danger');
         return false;
@@ -86,7 +92,7 @@ class MyAccountPage extends Component {
 
   render() {
     const {
-      username, email, error, newpassword,
+      username, email, error, newPassword, confirmNewPassword,
     } = this.state;
     return (
       <Container>
@@ -115,13 +121,21 @@ class MyAccountPage extends Component {
           <Form>
             <Form.Input
               onChange={this.handleChange}
-              value={newpassword}
-              name="newpassword"
+              value={newPassword}
+              name="newPassword"
               fluid
-              required
               label="New password"
               type="password"
               placeholder="New password"
+            />
+            <Form.Input
+              onChange={this.handleChange}
+              value={confirmNewPassword}
+              name="confirmNewPassword"
+              fluid
+              label="Confirm Password"
+              type="Password"
+              placeholder="Confirm Password"
             />
             <Button color="blue" onClick={this.changePassword} type="submit">
               Change password

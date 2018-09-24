@@ -22,13 +22,12 @@ class ForgotPasswordPage extends Component {
       return;
     }
 
-    // Accounts.forgotPassword({ email }, (err) => {
-    //   if (err) {
-    //     this.setState({ error: err.reason });
-    //   }
-    //   Bert.alert(`Request sent to ${email}.`, 'success', 'growl-top-right');
-    // });
-    this.setState({ email: '' });
+    Accounts.forgotPassword({ email }, (err) => {
+      if (err) {
+        this.setState({ error: err.reason });
+      }
+      Bert.alert(`Request sent to ${email}.`, 'success', 'growl-top-right');
+    });
   };
 
   render() {
@@ -54,7 +53,7 @@ class ForgotPasswordPage extends Component {
                 type="Email"
                 placeholder="Email"
               />
-              <Button fluid color="blue" onClick={this.handleSubmit} type="submit">
+              <Button fluid color="black" onClick={this.handleSubmit} type="submit">
                 Submit
               </Button>
             </Form>

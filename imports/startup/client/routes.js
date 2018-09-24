@@ -11,6 +11,7 @@ import HomePage from '../../ui/pages/HomePage';
 import LoginPage from '../../ui/pages/LoginPage';
 import RegisterPage from '../../ui/pages/RegisterPage';
 import ForgotPasswordPage from '../../ui/pages/ForgotPasswordPage';
+import NewPasswordPage from '../../ui/pages/NewPasswordPage';
 import MyAccountPage from '../../ui/pages/MyAccountPage';
 
 const history = createHistory();
@@ -32,10 +33,7 @@ const routes = (
         <Route
           exact
           path="/login"
-          render={() => {
-            console.log(Meteor.userId());
-            return Meteor.userId() ? <Redirect to="/" /> : <LoginPage />;
-          }}
+          render={() => (Meteor.userId() ? <Redirect to="/" /> : <LoginPage />)}
         />
         <Route
           exact
@@ -47,6 +45,7 @@ const routes = (
           path="/forgot-password"
           render={() => (Meteor.userId() ? <Redirect to="/" /> : <ForgotPasswordPage />)}
         />
+        <Route exact path="/new-password/:token" render={props => <NewPasswordPage {...props} />} />
         <Route
           exact
           path="/my-account"
