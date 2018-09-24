@@ -29,3 +29,4 @@ seba:minifiers-autoprefixer
 alanning:roles
 check
 meteorhacks:ssr
+dburles:collection-helpers

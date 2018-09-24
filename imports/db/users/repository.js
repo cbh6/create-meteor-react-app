@@ -8,6 +8,11 @@ function findOne(id) {
   return user;
 }
 
+function updateById(id, options) {
+  Users.update(id, { $set: options });
+}
+
 export default {
   findOne,
+  updateById,
 };

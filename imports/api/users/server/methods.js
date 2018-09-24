@@ -27,4 +27,18 @@ Meteor.methods({
     Security.checkLoggedIn();
     return RepoUsers.findOne(Meteor.userId());
   },
+  updateUserData(userId, options) {
+    check(userId, String);
+    check(options, Object);
+    Security.checkLoggedIn();
+    Security.checkLoggedUser(userId);
+    RepoUsers.updateById(userId, options);
+  },
+  changeUserPassword(userId, password) {
+    check(userId, String);
+    check(password, String);
+    Security.checkLoggedIn();
+    Security.checkLoggedUser(userId);
+    Accounts.setPassword(userId, password);
+  },
 });

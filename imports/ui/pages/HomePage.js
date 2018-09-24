@@ -4,7 +4,7 @@ import { Header, Container } from 'semantic-ui-react';
 const HomePage = () => (
   <Container>
     <Header as="h1" textAlign="center">
-      Welcome to your Meteor Base App
+      Welcome to your Meteor App
     </Header>
   </Container>
 );

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Button, Form, Container, Header, Segment, Message, Icon, Popup,
+  Button, Form, Container, Header, Segment, Message,
 } from 'semantic-ui-react';
+import Validators from '../../api/validators';
 
 class MyAccountPage extends Component {
   state = {
     username: '',
-    oldpassword: '',
+    email: '',
     newpassword: '',
     error: '',
   };
@@ -15,28 +17,28 @@ class MyAccountPage extends Component {
   componentDidMount() {
     Meteor.call('getUserData', (err, res) => {
       if (err) {
-        Bert.alert('There was an error trying to get your user data');
+        Bert.alert('There was an error trying to get your user data', 'danger');
         return false;
       }
 
-      this.setState({ username: res.username });
+      this.setState({ username: res.username, email: res.emails[0].address });
     });
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = () => {
-    const { email, password } = this.state;
-    const { history } = this.props;
-
     if (!this.validForm()) return false;
-    Meteor.loginWithPassword(email, password, (err) => {
+
+    const { username } = this.state;
+    const options = { username };
+
+    Meteor.call('updateUserData', Meteor.userId(), options, (err) => {
       if (err) {
-        this.setState({ error: err.reason });
+        Bert.alert(`There was an error trying to update your user data ${err.message}`, 'danger');
         return false;
       }
-      Bert.alert('Logged in', 'success');
-      history.push('/');
+      Bert.alert('Your profile was updated successfully', 'success');
     });
   };
 
@@ -47,12 +49,44 @@ class MyAccountPage extends Component {
       this.setState({ error: 'There are empty required fields' });
       return false;
     }
+
+    this.setState({ error: '' });
     return true;
+  };
+
+  changePassword = () => {
+    const { newpassword } = this.state;
+
+    if (!newpassword) {
+      this.setState({ error: 'There are empty required fields' });
+      return false;
+    }
+
+    if (!Validators.validPassword(newpassword, 6)) {
+      this.setState({ error: 'Password must contain at least 6 characters' });
+      return false;
+    }
+
+    this.setState({ error: '' });
+    Meteor.call('changeUserPassword', Meteor.userId(), newpassword, (err) => {
+      if (err) {
+        Bert.alert(`There was an error trying to update your password ${err.message}`, 'danger');
+        return false;
+      }
+      Bert.alert('Your password was updated successfully', 'success');
+
+      // We need to wait 1 second before redirecting user to login
+      // That's because meteor userId() does not update instantly
+      setTimeout(() => {
+        const { history } = this.props;
+        history.push('/login');
+      }, 1000);
+    });
   };
 
   render() {
     const {
-      username, error, oldpassword, newpassword,
+      username, email, error, newpassword,
     } = this.state;
     return (
       <Container>
@@ -62,6 +96,7 @@ class MyAccountPage extends Component {
             {error}
           </Message>
           <Form>
+            <Form.Input value={email} fluid label="Email" type="email" readOnly />
             <Form.Input
               onChange={this.handleChange}
               value={username}
@@ -72,21 +107,12 @@ class MyAccountPage extends Component {
               type="text"
               placeholder="Username"
             />
-            <Button fluid color="black" onClick={this.handleSubmit} type="submit">
+            <Button color="blue" onClick={this.handleSubmit} type="submit">
               Save
             </Button>
           </Form>
+          <br />
           <Form>
-            <Form.Input
-              onChange={this.handleChange}
-              value={oldpassword}
-              name="oldpassword"
-              fluid
-              required
-              label="Old password"
-              type="password"
-              placeholder="Old password"
-            />
             <Form.Input
               onChange={this.handleChange}
               value={newpassword}
@@ -97,7 +123,7 @@ class MyAccountPage extends Component {
               type="password"
               placeholder="New password"
             />
-            <Button fluid color="black" onClick={this.changePassword} type="submit">
+            <Button color="blue" onClick={this.changePassword} type="submit">
               Change password
             </Button>
           </Form>
@@ -106,3 +132,9 @@ class MyAccountPage extends Component {
     );
   }
 }
+
+MyAccountPage.propTypes = {
+  history: PropTypes.object.isRequired,
+};
+
+export default withRouter(MyAccountPage);

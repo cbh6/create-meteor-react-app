@@ -8,4 +8,10 @@ export default class Security {
       throw new Meteor.Error('not-authorized', 'You are not logged in');
     }
   }
+
+  static checkLoggedUser(userId) {
+    if (userId !== Meteor.userId()) {
+      throw new Meteor.Error('not-authorized', 'You are not authorized');
+    }
+  }
 }

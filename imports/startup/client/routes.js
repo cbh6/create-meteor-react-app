@@ -32,7 +32,10 @@ const routes = (
         <Route
           exact
           path="/login"
-          render={() => (Meteor.userId() ? <Redirect to="/" /> : <LoginPage />)}
+          render={() => {
+            console.log(Meteor.userId());
+            return Meteor.userId() ? <Redirect to="/" /> : <LoginPage />;
+          }}
         />
         <Route
           exact

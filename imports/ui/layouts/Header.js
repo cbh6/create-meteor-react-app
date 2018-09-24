@@ -35,7 +35,9 @@ class Header extends Component {
             {/* Logged user menu */}
             <Menu.Menu position="right">
               <Menu.Item name="logout" onClick={this.onLogout} />
-              <Menu.Item>{user && user.username}</Menu.Item>
+              <Menu.Item as={Link} to="/my-account">
+                {user && user.username}
+              </Menu.Item>
             </Menu.Menu>
           </Fragment>
         ) : (

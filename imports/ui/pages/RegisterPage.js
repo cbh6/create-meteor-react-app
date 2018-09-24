@@ -18,15 +18,26 @@ class RegisterPage extends Component {
 
   handleSubmit = () => {
     const { email, password, username } = this.state;
-    const { history } = this.props;
 
     if (!this.validForm()) return false;
+
     Meteor.call('createNewUser', { email, password, username }, (err) => {
       if (err) {
         this.setState({ error: err.reason });
         return false;
       }
-      Bert.alert('Account created. Logged in', 'success');
+      this.login(email, password);
+    });
+  };
+
+  login = (email, password) => {
+    const { history } = this.props;
+    Meteor.loginWithPassword(email, password, (err) => {
+      if (err) {
+        this.setState({ error: err.reason });
+        return false;
+      }
+      Bert.alert('Logged in', 'success');
       history.push('/');
     });
   };
