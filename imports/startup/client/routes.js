@@ -13,6 +13,7 @@ import RegisterPage from '../../ui/pages/RegisterPage';
 import ForgotPasswordPage from '../../ui/pages/ForgotPasswordPage';
 import NewPasswordPage from '../../ui/pages/NewPasswordPage';
 import MyAccountPage from '../../ui/pages/MyAccountPage';
+import NotFoundPage from '../../ui/pages/NotFoundPage';
 
 const history = createHistory();
 
@@ -51,6 +52,7 @@ const routes = (
           path="/my-account"
           render={() => (Meteor.userId() ? <MyAccountPage /> : <Redirect to="/login" />)}
         />
+        <Route component={NotFoundPage} />
       </Switch>
     </MainLayout>
   </Router>
