@@ -9,6 +9,10 @@ import Validators from '../../api/validators';
 class LoginPage extends Component {
   state = { email: '', password: '', error: '' };
 
+  componentDidMount() {
+    throw new Error('I Crashed !!');
+  }
+
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = () => {

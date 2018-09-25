@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { Segment } from 'semantic-ui-react';
 import Header from './Header';
 import Footer from './Footer';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 const MainLayout = ({ children }) => (
   <Fragment>
     <Header />
     <Segment basic className="site-content">
-      {children}
+      <ErrorBoundary>{children}</ErrorBoundary>
     </Segment>
     <Footer />
   </Fragment>
