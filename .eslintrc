@@ -52,6 +52,8 @@
     "Roles": true,
     "moment": true,
     "Bert": true,
-    "Counter": true
+    "Counter": true,
+    "Factory": true,
+    "before": true
   }
 }

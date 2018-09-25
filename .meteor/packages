@@ -15,18 +15,22 @@ es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.11.1              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.3.1            # Server-side component of the `meteor shell` command
 
-less@2.7.12                    # Leaner CSS language
-
-meteortesting:mocha               # A package for writing and running your meteor app and package tests with mocha
-johanbrook:publication-collector  # Test a Meteor publication by collecting its output
 static-html
 react-meteor-data
-accounts-password
 themeteorchef:bert
-accounts-base
 fourseven:scss
 seba:minifiers-autoprefixer
-alanning:roles
 check
 meteorhacks:ssr
 dburles:collection-helpers
+
+# accounts
+accounts-password
+accounts-base
+alanning:roles
+
+# testing
+meteortesting:mocha               # A package for writing and running your meteor app and package tests with mocha
+dburles:factory
+hwillson:stub-collections
+johanbrook:publication-collector  # Test a Meteor publication by collecting its output

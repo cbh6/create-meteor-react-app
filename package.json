@@ -5,7 +5,8 @@
   "scripts": {
     "start": "./run.sh",
     "dev": "METEORLOCAL=1 ./run.sh",
-    "test": "meteor test --once --driver-package meteortesting:mocha"
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-watch": "TEST_WATCH=1 meteor test --driver-package meteortesting:mocha --port 3100"
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.55",
@@ -25,6 +26,8 @@
   "devDependencies": {
     "babel-eslint": "^9.0.0",
     "chai": "^4.1.2",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^5.6.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.0.1",
@@ -33,6 +36,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-meteor": "^5.1.0",
     "eslint-plugin-react": "^7.11.1",
+    "faker": "^4.1.0",
     "prettier": "^1.14.2"
   }
 }
