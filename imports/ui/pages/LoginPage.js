@@ -7,15 +7,6 @@ import {
 } from 'semantic-ui-react';
 import { userValidationSchema } from '../../api/validation-schemas';
 
-// const loginValidationSchema = Yup.object().shape({
-//   email: Yup.string()
-//     .email('Invalid email address')
-//     .required('Email is required!'),
-//   password: Yup.string()
-//     .min(9, 'Password must be 9 characters or longer')
-//     .required('Password is required'),
-// });
-
 const LoginPage = props => (
   <Grid centered columns={1}>
     <Grid.Column className="centered-form">
