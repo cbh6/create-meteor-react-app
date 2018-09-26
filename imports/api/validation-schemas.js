@@ -9,4 +9,6 @@ export const userValidationSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
-export const hola = '';
+export const defaultValidationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+});
