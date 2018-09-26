@@ -1,40 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import {
-  Button, Form, Message, Header, Grid, Segment,
+  Button, Form, Header, Grid, Segment,
 } from 'semantic-ui-react';
-import Validators from '../../api/validators';
+import FormMessages from '../components/FormMessages';
+import { registerValidationSchema } from '../validation/user-schema';
 
 class RegisterPage extends Component {
-  state = {
-    email: '',
-    password: '',
-    username: '',
-    error: '',
-  };
-
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-  handleSubmit = () => {
-    const { email, password, username } = this.state;
-
-    if (!this.validForm()) return false;
-
-    Meteor.call('createNewUser', { email, password, username }, (err) => {
-      if (err) {
-        this.setState({ error: err.reason });
-        return false;
-      }
-      this.login(email, password);
-    });
-  };
-
   login = (email, password) => {
     const { history } = this.props;
     Meteor.loginWithPassword(email, password, (err) => {
       if (err) {
-        this.setState({ error: err.reason });
+        Bert.alert(err.reason, 'danger');
         return false;
       }
       Bert.alert('Logged in', 'success');
@@ -42,31 +21,7 @@ class RegisterPage extends Component {
     });
   };
 
-  validForm = () => {
-    const { email, password, username } = this.state;
-
-    if (!email || !password || !username) {
-      this.setState({ error: 'There are empty required fields' });
-      return false;
-    }
-
-    if (!Validators.validMailString(email)) {
-      this.setState({ error: 'Invalid email address' });
-      return false;
-    }
-
-    if (!Validators.validPassword(password, 6)) {
-      this.setState({ error: 'Password must contain at least 6 characters' });
-      return false;
-    }
-
-    return true;
-  };
-
   render() {
-    const {
-      error, username, email, password,
-    } = this.state;
     return (
       <Grid centered columns={1}>
         <Grid.Column className="centered-form">
@@ -74,44 +29,79 @@ class RegisterPage extends Component {
             Please Sign up
           </Header>
           <Segment>
-            <Message hidden={!error} color="red">
-              {error}
-            </Message>
-            <Form>
-              <Form.Input
-                onChange={this.handleChange}
-                value={username}
-                name="username"
-                fluid
-                required
-                label="Username"
-                type="text"
-                placeholder="Username"
-              />
-              <Form.Input
-                onChange={this.handleChange}
-                value={email}
-                name="email"
-                fluid
-                required
-                label="Email"
-                type="Email"
-                placeholder="Email"
-              />
-              <Form.Input
-                onChange={this.handleChange}
-                value={password}
-                name="password"
-                fluid
-                required
-                label="Password"
-                type="Password"
-                placeholder="Password"
-              />
-              <Button fluid color="black" onClick={this.handleSubmit} type="submit">
-                Sign up
-              </Button>
-            </Form>
+            <Formik
+              validationSchema={registerValidationSchema}
+              initialValues={{ email: '', password: '', username: '' }}
+              onSubmit={(values, { setSubmitting }) => {
+                const { email, password, username } = values;
+                Meteor.call('createNewUser', { email, password, username }, (err) => {
+                  if (err) {
+                    Bert.alert(err.reason, 'danger');
+                    return false;
+                  }
+                  setSubmitting(false);
+                  this.login(email, password);
+                });
+              }}
+              render={({
+                values,
+                touched,
+                errors,
+                handleSubmit,
+                handleChange,
+                handleBlur,
+                isSubmitting,
+              }) => (
+                <Fragment>
+                  <FormMessages errors={errors} touched={touched} />
+
+                  <Form>
+                    <Form.Input
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.username}
+                      name="username"
+                      fluid
+                      required
+                      label="Username"
+                      type="text"
+                      placeholder="Username"
+                    />
+                    <Form.Input
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      name="email"
+                      fluid
+                      required
+                      label="Email"
+                      type="Email"
+                      placeholder="Email"
+                    />
+                    <Form.Input
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                      name="password"
+                      fluid
+                      required
+                      label="Password"
+                      type="Password"
+                      placeholder="Password"
+                    />
+                    <Button
+                      fluid
+                      color="black"
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                      type="submit"
+                    >
+                      Sign up
+                    </Button>
+                  </Form>
+                </Fragment>
+              )}
+            />
           </Segment>
         </Grid.Column>
       </Grid>

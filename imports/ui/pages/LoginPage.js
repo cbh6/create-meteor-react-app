@@ -3,9 +3,10 @@ import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import {
-  Button, Form, Message, Header, Grid, Segment,
+  Button, Form, Header, Grid, Segment,
 } from 'semantic-ui-react';
-import { userValidationSchema } from '../../api/validation-schemas';
+import FormMessages from '../components/FormMessages';
+import { loginValidationSchema } from '../validation/user-schema';
 
 const LoginPage = props => (
   <Grid centered columns={1}>
@@ -15,7 +16,7 @@ const LoginPage = props => (
       </Header>
       <Segment>
         <Formik
-          validationSchema={userValidationSchema}
+          validationSchema={loginValidationSchema}
           initialValues={{ email: '', password: '' }}
           onSubmit={(values, { setSubmitting }) => {
             const { history } = props;
@@ -40,12 +41,7 @@ const LoginPage = props => (
             isSubmitting,
           }) => (
             <Fragment>
-              <Message
-                hidden={!Object.keys(errors).length || !Object.keys(touched).length}
-                color="red"
-              >
-                {Object.keys(errors).map(key => touched[key] && <p key={key}>{errors[key]}</p>)}
-              </Message>
+              <FormMessages errors={errors} touched={touched} />
               <Form onSubmit={handleSubmit}>
                 <Form.Input
                   onChange={handleChange}
