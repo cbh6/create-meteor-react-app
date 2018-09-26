@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Formik } from 'formik';
 import {
-  Button, Form, Container, Header, Segment, Message,
+  Button, Form, Container, Header, Segment,
 } from 'semantic-ui-react';
-import Validators from '../../api/validators';
+import FormMessages from '../components/FormMessages';
+import { resetPasswordValidationSchema, profileValidationSchema } from '../validation/user-schema';
 
 class MyAccountPage extends Component {
   state = {
     username: '',
     email: '',
-    newPassword: '',
-    confirmNewPassword: '',
-    error: '',
   };
 
   componentDidMount() {
@@ -26,121 +25,124 @@ class MyAccountPage extends Component {
     });
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-  handleSubmit = () => {
-    if (!this.validForm()) return false;
-
-    const { username } = this.state;
-    const options = { username };
-
-    Meteor.call('updateUserData', Meteor.userId(), options, (err) => {
-      if (err) {
-        Bert.alert(`There was an error trying to update your user data ${err.message}`, 'danger');
-        return false;
-      }
-      Bert.alert('Your profile was updated successfully', 'success');
-    });
-  };
-
-  validForm = () => {
-    const { username } = this.state;
-
-    if (!username) {
-      this.setState({ error: 'There are empty required fields' });
-      return false;
-    }
-
-    this.setState({ error: '' });
-    return true;
-  };
-
-  changePassword = () => {
-    const { newPassword, confirmNewPassword } = this.state;
-
-    if (!newPassword || !confirmNewPassword) {
-      this.setState({ error: 'There are empty required fields' });
-      return false;
-    }
-
-    if (newPassword !== confirmNewPassword) {
-      this.setState({ error: 'Passwords must match' });
-      return false;
-    }
-
-    if (!Validators.validPassword(newPassword, 6)) {
-      this.setState({ error: 'Password must contain at least 6 characters' });
-      return false;
-    }
-
-    this.setState({ error: '' });
-    Meteor.call('changeUserPassword', Meteor.userId(), newPassword, (err) => {
-      if (err) {
-        Bert.alert(`There was an error trying to update your password ${err.message}`, 'danger');
-        return false;
-      }
-      Bert.alert('Your password was updated successfully', 'success');
-
-      // We need to wait 1 second before redirecting user to login
-      // That's because meteor userId() does not update instantly
-      setTimeout(() => {
-        const { history } = this.props;
-        history.push('/login');
-      }, 1000);
-    });
-  };
-
   render() {
-    const {
-      username, email, error, newPassword, confirmNewPassword,
-    } = this.state;
+    const { username, email } = this.state;
     return (
       <Container>
         <Header as="h1">My Account</Header>
         <Segment padded>
-          <Message hidden={!error} color="red">
-            {error}
-          </Message>
-          <Form>
-            <Form.Input value={email} fluid label="Email" type="email" readOnly />
-            <Form.Input
-              onChange={this.handleChange}
-              value={username}
-              name="username"
-              fluid
-              required
-              label="Username"
-              type="text"
-              placeholder="Username"
-            />
-            <Button color="blue" onClick={this.handleSubmit} type="submit">
-              Save
-            </Button>
-          </Form>
+          <Formik
+            validationSchema={profileValidationSchema}
+            initialValues={{ email, username }}
+            enableReinitialize
+            onSubmit={(values, { setSubmitting }) => {
+              const options = { username: values.username };
+
+              Meteor.call('updateUserData', Meteor.userId(), options, (err) => {
+                if (err) {
+                  Bert.alert(
+                    `There was an error trying to update your user data ${err.message}`,
+                    'danger',
+                  );
+                  return false;
+                }
+                Bert.alert('Your profile was updated successfully', 'success');
+                setSubmitting(false);
+              });
+            }}
+            render={({
+              values,
+              touched,
+              errors,
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              isSubmitting,
+            }) => (
+              <Fragment>
+                <FormMessages errors={errors} touched={touched} />
+                <Form>
+                  <Form.Input value={values.email} fluid label="Email" type="email" readOnly />
+                  <Form.Input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.username}
+                    name="username"
+                    fluid
+                    required
+                    label="Username"
+                    type="text"
+                    placeholder="Username"
+                  />
+                  <Button color="blue" onClick={handleSubmit} disabled={isSubmitting} type="submit">
+                    Save
+                  </Button>
+                </Form>
+              </Fragment>
+            )}
+          />
           <br />
-          <Form>
-            <Form.Input
-              onChange={this.handleChange}
-              value={newPassword}
-              name="newPassword"
-              fluid
-              label="New password"
-              type="password"
-              placeholder="New password"
-            />
-            <Form.Input
-              onChange={this.handleChange}
-              value={confirmNewPassword}
-              name="confirmNewPassword"
-              fluid
-              label="Confirm Password"
-              type="Password"
-              placeholder="Confirm Password"
-            />
-            <Button color="blue" onClick={this.changePassword} type="submit">
-              Change password
-            </Button>
-          </Form>
+          <Formik
+            validationSchema={resetPasswordValidationSchema}
+            initialValues={{ password: '', passwordConfirm: '' }}
+            onSubmit={(values, { setSubmitting }) => {
+              Meteor.call('changeUserPassword', Meteor.userId(), values.passwordConfirm, (err) => {
+                if (err) {
+                  Bert.alert(
+                    `There was an error trying to update your password ${err.message}`,
+                    'danger',
+                  );
+                  return false;
+                }
+                Bert.alert('Your password was updated successfully', 'success');
+                setSubmitting(false);
+                // We need to wait 1 second before redirecting user to login
+                // That's because meteor userId() does not update instantly
+                setTimeout(() => {
+                  const { history } = this.props;
+                  history.push('/login');
+                }, 1000);
+              });
+            }}
+            render={({
+              values,
+              touched,
+              errors,
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              isSubmitting,
+            }) => (
+              <Fragment>
+                <FormMessages errors={errors} touched={touched} />
+                <Form>
+                  <Form.Input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    name="password"
+                    fluid
+                    label="New password"
+                    type="password"
+                    placeholder="New password"
+                  />
+                  <Form.Input
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.passwordConfirm}
+                    name="passwordConfirm"
+                    fluid
+                    label="Confirm Password"
+                    type="Password"
+                    placeholder="Confirm Password"
+                  />
+                  <Button color="blue" onClick={handleSubmit} disabled={isSubmitting} type="submit">
+                    Change password
+                  </Button>
+                </Form>
+              </Fragment>
+            )}
+          />
         </Segment>
       </Container>
     );

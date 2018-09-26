@@ -54,7 +54,6 @@ class RegisterPage extends Component {
               }) => (
                 <Fragment>
                   <FormMessages errors={errors} touched={touched} />
-
                   <Form>
                     <Form.Input
                       onChange={handleChange}
