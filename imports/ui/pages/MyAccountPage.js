@@ -7,12 +7,12 @@ import ChangePasswordForm from '../components/Forms/ChangePasswordForm';
 const MyAccountPage = (props) => {
   const changePassword = (values, { setSubmitting }) => {
     Meteor.call('changeUserPassword', Meteor.userId(), values.passwordConfirm, (err) => {
+      setSubmitting(false);
       if (err) {
         Bert.alert(`There was an error trying to update your password ${err.message}`, 'danger');
         return false;
       }
       Bert.alert('Your password was updated successfully', 'success');
-      setSubmitting(false);
       // We need to wait 1 second before redirecting user to login
       // That's because meteor userId() does not update instantly
       setTimeout(() => {

@@ -25,11 +25,11 @@ const RegisterForm = (props) => {
       onSubmit={(values, { setSubmitting }) => {
         const { email, password, username } = values;
         Meteor.call('createNewUser', { email, password, username }, (err) => {
+          setSubmitting(false);
           if (err) {
             Bert.alert(err.reason, 'danger');
             return false;
           }
-          setSubmitting(false);
           login(email, password);
         });
       }}

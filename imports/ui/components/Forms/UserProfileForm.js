@@ -31,6 +31,7 @@ class UserProfileForm extends Component {
           const options = { username: values.username };
 
           Meteor.call('updateUserData', Meteor.userId(), options, (err) => {
+            setSubmitting(false);
             if (err) {
               Bert.alert(
                 `There was an error trying to update your user data ${err.message}`,
@@ -39,7 +40,6 @@ class UserProfileForm extends Component {
               return false;
             }
             Bert.alert('Your profile was updated successfully', 'success');
-            setSubmitting(false);
           });
         }}
         render={({

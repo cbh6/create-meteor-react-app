@@ -14,12 +14,12 @@ const LoginForm = props => (
       const { history } = props;
       const { email, password } = values;
       Meteor.loginWithPassword(email, password, (err) => {
+        setSubmitting(false);
         if (err) {
           Bert.alert(err.reason, 'danger');
           return false;
         }
         Bert.alert('Logged in', 'success');
-        setSubmitting(false);
         history.push('/');
       });
     }}

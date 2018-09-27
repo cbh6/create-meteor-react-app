@@ -9,20 +9,21 @@ const LoginPage = () => (
       <Header textAlign="center" as="h3">
         Please Sign in
       </Header>
-      <Segment />
-      <LoginForm />
-      <p className="login-subtitle">
-        Not a member?
-        {' '}
-        <Link color="black" to="/register">
-          Sign up here
-        </Link>
-      </p>
-      <p className="login-subtitle">
-        Forgot password?
-        {' '}
-        <Link to="/forgot-password">Click here</Link>
-      </p>
+      <Segment>
+        <LoginForm />
+        <p className="login-subtitle">
+          Not a member?
+          {' '}
+          <Link color="black" to="/register">
+            Sign up here
+          </Link>
+        </p>
+        <p className="login-subtitle">
+          Forgot password?
+          {' '}
+          <Link to="/forgot-password">Click here</Link>
+        </p>
+      </Segment>
     </Grid.Column>
   </Grid>
 );
