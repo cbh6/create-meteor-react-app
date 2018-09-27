@@ -16,7 +16,6 @@ class UserProfileForm extends Component {
         Bert.alert('There was an error trying to get your user data', 'danger');
         return false;
       }
-
       this.setState({ username: res.username, email: res.emails[0].address });
     });
   }
