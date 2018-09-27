@@ -10,10 +10,21 @@ import { assert } from 'chai';
 import faker from 'faker';
 import Users from './users';
 
-Factory.define('user', Users, {
-  username: faker.name.findName(),
+Factory.define('user', Meteor.users, {
+  username: () => faker.lorem.word(),
+  profile: {
+    firstName: () => faker.name.firstName(),
+    lastName: () => faker.name.lastName(),
+  },
+  emails() {
+    return [
+      {
+        address: faker.internet.email(),
+        verified: false,
+      },
+    ];
+  },
   createdAt: new Date(),
-  emails: [{ address: faker.internet.email(), verified: false }],
 });
 
 if (Meteor.isServer) {

@@ -37,7 +37,7 @@ const routes = (
         <Route
           exact
           path="/users"
-          render={() => (Security.isAdmin() ? <UsersPage /> : <NotAuthorizedPage />)}
+          render={() => (Security.isAdmin(Meteor.userId()) ? <UsersPage /> : <NotAuthorizedPage />)}
         />
         <Route
           exact

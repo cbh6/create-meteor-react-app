@@ -34,7 +34,7 @@ class Header extends Component {
           <Fragment>
             <Menu.Item name="home" active={activeItem === 'home'} onClick={this.handleItemClick} />
             {/* Admin menu */}
-            {Security.isAdmin() ? (
+            {Security.isAdmin(Meteor.userId()) ? (
               <Menu.Item
                 name="users"
                 active={activeItem === 'users'}
