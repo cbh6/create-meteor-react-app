@@ -5,6 +5,7 @@ import {
   Route, Router, Switch, Redirect,
 } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
+import Security from '../../api/security';
 
 import MainLayout from '../../ui/layouts/MainLayout';
 import HomePage from '../../ui/pages/HomePage';
@@ -14,6 +15,8 @@ import ForgotPasswordPage from '../../ui/pages/ForgotPasswordPage';
 import NewPasswordPage from '../../ui/pages/NewPasswordPage';
 import MyAccountPage from '../../ui/pages/MyAccountPage';
 import NotFoundPage from '../../ui/pages/NotFoundPage';
+import NotAuthorizedPage from '../../ui/pages/NotAuthorizedPage';
+import UsersPage from '../../ui/pages/UsersPage';
 
 const history = createHistory();
 
@@ -30,6 +33,11 @@ const routes = (
           exact
           path="/home"
           render={() => (Meteor.userId() ? <HomePage /> : <Redirect to="/login" />)}
+        />
+        <Route
+          exact
+          path="/users"
+          render={() => (Security.isAdmin() ? <UsersPage /> : <NotAuthorizedPage />)}
         />
         <Route
           exact

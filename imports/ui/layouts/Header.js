@@ -3,6 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react';
+import Security from '../../api/security';
 
 class Header extends Component {
   state = { activeItem: '' };
@@ -32,6 +33,14 @@ class Header extends Component {
         {Meteor.userId() ? (
           <Fragment>
             <Menu.Item name="home" active={activeItem === 'home'} onClick={this.handleItemClick} />
+            {/* Admin menu */}
+            {Security.isAdmin() ? (
+              <Menu.Item
+                name="users"
+                active={activeItem === 'users'}
+                onClick={this.handleItemClick}
+              />
+            ) : null}
             {/* Logged user menu */}
             <Menu.Menu position="right">
               <Menu.Item name="logout" onClick={this.onLogout} />

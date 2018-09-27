@@ -1,5 +1,7 @@
 export default class Security {
   static isAdmin() {
+    console.log(Meteor.userId());
+    console.log(Roles.userIsInRole(Meteor.userId(), ['admin'], 'default-group'));
     return Roles.userIsInRole(Meteor.userId(), ['admin'], 'default-group');
   }
 

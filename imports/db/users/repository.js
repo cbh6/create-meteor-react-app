@@ -12,7 +12,12 @@ function updateById(id, options) {
   Users.update(id, { $set: options });
 }
 
+function findAll() {
+  return Users.find();
+}
+
 export default {
   findOne,
   updateById,
+  findAll,
 };
