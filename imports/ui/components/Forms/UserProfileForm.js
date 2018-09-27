@@ -66,7 +66,7 @@ class UserProfileForm extends Component {
                 type="text"
                 placeholder="Username"
               />
-              <Button color="blue" onClick={handleSubmit} disabled={isSubmitting} type="submit">
+              <Button color="black" onClick={handleSubmit} disabled={isSubmitting} type="submit">
                 Save
               </Button>
             </Form>

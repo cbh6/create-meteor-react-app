@@ -6,7 +6,7 @@ import FormMessages from '../FormMessages';
 import { resetPasswordValidationSchema } from '../../validation/user-schema';
 
 const ChangePasswordForm = (props) => {
-  const { submitMethod } = props;
+  const { submitMethod, buttonFluid } = props;
   return (
     <Formik
       validationSchema={resetPasswordValidationSchema}
@@ -44,7 +44,13 @@ const ChangePasswordForm = (props) => {
               type="Password"
               placeholder="Confirm Password"
             />
-            <Button color="blue" onClick={handleSubmit} disabled={isSubmitting} type="submit">
+            <Button
+              fluid={buttonFluid}
+              color="black"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              type="submit"
+            >
               Change password
             </Button>
           </Form>
@@ -56,6 +62,11 @@ const ChangePasswordForm = (props) => {
 
 ChangePasswordForm.propTypes = {
   submitMethod: PropTypes.func.isRequired,
+  buttonFluid: PropTypes.bool,
+};
+
+ChangePasswordForm.defaultProps = {
+  buttonFluid: false,
 };
 
 export default ChangePasswordForm;

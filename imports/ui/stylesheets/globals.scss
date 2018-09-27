@@ -1,3 +1,9 @@
+@import './variables.scss';
+
+* {
+  font-family: $poppins !important;
+}
+
 .centered-form {
   max-width: 450px;
   margin-top: 80px;

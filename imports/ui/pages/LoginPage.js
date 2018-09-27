@@ -11,6 +11,7 @@ const LoginPage = () => (
       </Header>
       <Segment>
         <LoginForm />
+        <br />
         <p className="login-subtitle">
           Not a member?
           {' '}

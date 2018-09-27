@@ -1,23 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Message, Grid, Segment, Form, Button, Header,
-} from 'semantic-ui-react';
-import Validators from '../../api/validators';
+import { Grid, Segment, Header } from 'semantic-ui-react';
+import ChangePasswordForm from '../components/Forms/ChangePasswordForm';
 
 class NewPassword extends Component {
-  constructor() {
-    super();
-    this.state = {
-      error: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    };
-  }
+  state = { email: '' };
 
   componentDidMount() {
-    const { token } = this.props.match.params;
+    const { match } = this.props;
+    const { token } = match.params;
 
     Meteor.call('getEmailFromToken', token, (err, result) => {
       this.setState({
@@ -26,44 +17,23 @@ class NewPassword extends Component {
     });
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-  handleSubmit = () => {
+  resetPassword = (values, { setSubmitting }) => {
     const { history, match } = this.props;
     const { token } = match.params;
-    const { password } = this.state;
 
-    if (!this.validForm()) return false;
-    Accounts.resetPassword(token, password, (err) => {
-      err ? this.setState({ error: err.reason }) : history.push('/');
+    Accounts.resetPassword(token, values.password, (err) => {
+      setSubmitting(false);
+      err
+        ? Bert.alert(
+          `There was an error trying to reset your password: <strong>${err.message}</strong>`,
+          'danger',
+        )
+        : history.push('/');
     });
   };
 
-  validForm = () => {
-    const { password, confirmPassword } = this.state;
-
-    if (!password || !confirmPassword) {
-      this.setState({ error: 'There are empty required fields' });
-      return false;
-    }
-
-    if (!Validators.validPassword(password, 6)) {
-      this.setState({ error: 'Password must contain at least 6 characters' });
-      return false;
-    }
-
-    if (password !== confirmPassword) {
-      this.setState({ error: 'Passwords must match' });
-      return false;
-    }
-
-    return true;
-  };
-
   render() {
-    const {
-      email, password, confirmPassword, error,
-    } = this.state;
+    const { email } = this.state;
     return (
       <Grid centered columns={1}>
         <Grid.Column className="centered-form">
@@ -71,42 +41,10 @@ class NewPassword extends Component {
             Reset your password
           </Header>
           <Segment>
-            <Message hidden={!error} color="red">
-              {error}
-            </Message>
-            <Form>
-              <Form.Input
-                onChange={this.handleChange}
-                value={email}
-                name="email"
-                fluid
-                required
-                label="Email"
-                type="Email"
-                placeholder="Email"
-              />
-              <Form.Input
-                onChange={this.handleChange}
-                value={password}
-                name="password"
-                fluid
-                required
-                label="Password"
-                type="Password"
-              />
-              <Form.Input
-                onChange={this.handleChange}
-                value={confirmPassword}
-                name="confirmPassword"
-                fluid
-                required
-                label="Confirm Password"
-                type="Password"
-              />
-              <Button fluid color="black" onClick={this.handleSubmit} type="submit">
-                Submit
-              </Button>
-            </Form>
+            <Fragment>
+              <p>{email}</p>
+              <ChangePasswordForm buttonFluid submitMethod={this.resetPassword} />
+            </Fragment>
           </Segment>
         </Grid.Column>
       </Grid>

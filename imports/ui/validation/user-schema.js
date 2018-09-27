@@ -33,3 +33,4 @@ export const loginValidationSchema = Yup.object().shape({ email, password });
 export const registerValidationSchema = Yup.object().shape({ email, username, password });
 export const profileValidationSchema = Yup.object().shape({ username });
 export const resetPasswordValidationSchema = Yup.object().shape({ password, passwordConfirm });
+export const forgotPasswordValidationSchema = Yup.object().shape({ email });
