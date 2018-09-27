@@ -1,84 +1,16 @@
-import React, { Fragment } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Formik } from 'formik';
-import {
-  Button, Form, Header, Grid, Segment,
-} from 'semantic-ui-react';
-import FormMessages from '../components/FormMessages';
-import { loginValidationSchema } from '../validation/user-schema';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Header, Grid, Segment } from 'semantic-ui-react';
+import LoginForm from '../components/Forms/LoginForm';
 
-const LoginPage = props => (
+const LoginPage = () => (
   <Grid centered columns={1}>
     <Grid.Column className="centered-form">
       <Header textAlign="center" as="h3">
         Please Sign in
       </Header>
-      <Segment>
-        <Formik
-          validationSchema={loginValidationSchema}
-          initialValues={{ email: '', password: '' }}
-          onSubmit={(values, { setSubmitting }) => {
-            const { history } = props;
-            const { email, password } = values;
-            Meteor.loginWithPassword(email, password, (err) => {
-              if (err) {
-                Bert.alert(err.reason, 'danger');
-                return false;
-              }
-              Bert.alert('Logged in', 'success');
-              setSubmitting(false);
-              history.push('/');
-            });
-          }}
-          render={({
-            values,
-            touched,
-            errors,
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            isSubmitting,
-          }) => (
-            <Fragment>
-              <FormMessages errors={errors} touched={touched} />
-              <Form onSubmit={handleSubmit}>
-                <Form.Input
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  name="email"
-                  fluid
-                  required
-                  label="Email"
-                  type="Email"
-                  placeholder="Email"
-                />
-                <Form.Input
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  name="password"
-                  fluid
-                  required
-                  label="Password"
-                  type="Password"
-                  placeholder="Password"
-                />
-                <Button
-                  fluid
-                  color="black"
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  type="submit"
-                >
-                  Sign in
-                </Button>
-              </Form>
-            </Fragment>
-          )}
-        />
-      </Segment>
+      <Segment />
+      <LoginForm />
       <p className="login-subtitle">
         Not a member?
         {' '}
@@ -95,8 +27,4 @@ const LoginPage = props => (
   </Grid>
 );
 
-LoginPage.propTypes = {
-  history: PropTypes.object.isRequired,
-};
-
-export default withRouter(LoginPage);
+export default LoginPage;

@@ -1,3 +1,4 @@
+/* eslint no-template-curly-in-string: "off" */
 import * as Yup from 'yup';
 
 // Custom validation
