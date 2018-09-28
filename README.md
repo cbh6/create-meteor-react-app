@@ -1,6 +1,14 @@
-# meteor-base-project
+# meteor-react-app: Project setup for fast prototyping with react and meteor.
 
-Meteor basic setup
+![logo](https://imgur.com/BAzmlXJ)
+
+Full-Stack Web Setup
+
+React, is a Javascript library for building user interfaces.
+
+Meteor, is a free and open-source isomorphic JavaScript web framework written using Node.js.
+
+## Meteor basic setup
 
 - Meteor version 1.7.0.5
 - Node version 8.11.4
