@@ -9,8 +9,8 @@ Meteor.startup(() => {
   if (Meteor.users.find().count() === 0) {
     const id = Accounts.createUser({
       username: 'Administrator',
-      email: 'admin-email@yourapp.com',
-      password: 'admin',
+      email: 'admin@admin.com',
+      password: 'admin123',
       profile: {
         first_name: 'fname',
         last_name: 'lname',
