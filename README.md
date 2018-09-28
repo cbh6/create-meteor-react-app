@@ -35,7 +35,7 @@ Run configs are placed in `run.sh` file
 - Reset password
 - Edit user profile
 - Security methods
-- Roles
+- [Roles with alanning:roles meteor package](https://github.com/alanning/meteor-roles)
 - Form validation
 - Mailing
 
@@ -61,5 +61,5 @@ Testing
 
 Code format
 
-- eslint (airbnb and react/meteor styleguides )
+- eslint (airbnb and react/meteor styleguides)
 - prettier
