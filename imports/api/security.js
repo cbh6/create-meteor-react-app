@@ -7,8 +7,8 @@ export default class Security {
     return Roles.userIsInRole(this.userId, ['user'], 'default-group');
   }
 
-  static checkLoggedIn() {
-    if (!this.userId) {
+  static checkLoggedIn(userId) {
+    if (!userId) {
       throw new Meteor.Error('not-authorized', 'You are not logged in');
     }
   }

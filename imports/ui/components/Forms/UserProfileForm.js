@@ -12,6 +12,7 @@ class UserProfileForm extends Component {
 
   componentDidMount() {
     Meteor.call('getUserData', (err, res) => {
+      console.log(err);
       if (err) {
         Bert.alert('There was an error trying to get your user data', 'danger');
         return false;

@@ -24,7 +24,7 @@ Meteor.methods({
     return true;
   },
   getUserData() {
-    Security.checkLoggedIn();
+    Security.checkLoggedIn(Meteor.userId());
     return RepoUsers.findOne(Meteor.userId());
   },
   updateUserData(userId, options) {
