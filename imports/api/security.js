@@ -3,8 +3,8 @@ export default class Security {
     return Roles.userIsInRole(userId, ['admin'], 'default-group');
   }
 
-  static isUser() {
-    return Roles.userIsInRole(this.userId, ['user'], 'default-group');
+  static isUser(userId) {
+    return Roles.userIsInRole(userId, ['user'], 'default-group');
   }
 
   static checkLoggedIn(userId) {
@@ -14,7 +14,7 @@ export default class Security {
   }
 
   static checkLoggedUser(userId) {
-    if (userId !== this.userId) {
+    if (userId !== Meteor.userId()) {
       throw new Meteor.Error('not-authorized', 'You are not authorized');
     }
   }
