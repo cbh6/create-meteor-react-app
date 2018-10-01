@@ -30,14 +30,14 @@ Meteor.methods({
   updateUserData(userId, options) {
     check(userId, String);
     check(options, Object);
-    Security.checkLoggedIn();
+    Security.checkLoggedIn(userId);
     Security.checkLoggedUser(userId);
     RepoUsers.updateById(userId, options);
   },
   changeUserPassword(userId, password) {
     check(userId, String);
     check(password, String);
-    Security.checkLoggedIn();
+    Security.checkLoggedIn(userId);
     Security.checkLoggedUser(userId);
     Accounts.setPassword(userId, password);
   },

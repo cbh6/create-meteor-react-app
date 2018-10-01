@@ -23,6 +23,7 @@ Factory.define('user', Meteor.users, {
       },
     ];
   },
+  createdAt: new Date(),
 });
 
 describe('users publications', () => {

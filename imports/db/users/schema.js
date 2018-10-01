@@ -8,7 +8,7 @@ export default new SimpleSchema({
   'emails.$.address': { type: String },
   'emails.$.verified': { type: Boolean },
   createdAt: { type: Date },
-  services: { type: Object, blackbox: true },
+  services: { type: Object, blackbox: true, optional: true },
   roles: {
     type: Object,
     optional: true,
